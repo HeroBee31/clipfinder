@@ -72,3 +72,99 @@ main{min-height:100vh}.nav{height:72px;border-bottom:1px solid var(--line);displ
   cursor: wait;
   transform: none;
 }
+.loadingGrid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
+}
+
+.skeletonCard {
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.skeletonVideo {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 14px;
+  background: linear-gradient(
+    90deg,
+    #171717 25%,
+    #242424 50%,
+    #171717 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.4s infinite;
+}
+
+.skeletonLine {
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    #171717 25%,
+    #242424 50%,
+    #171717 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.4s infinite;
+}
+
+.skeletonTitle {
+  width: 75%;
+  height: 13px;
+  margin-top: 12px;
+}
+
+.skeletonMeta {
+  width: 45%;
+  height: 10px;
+  margin-top: 8px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .loadingGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .loadingGrid {
+    grid-template-columns: 1fr;
+  }
+}
+.shuffleBtn {
+  margin-top: 14px;
+  border: 1px solid #2d2d2d;
+  background: #171717;
+  color: #d5d5d5;
+  border-radius: 999px;
+  padding: 9px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.shuffleBtn:hover {
+  background: #242424;
+  border-color: #444;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.shuffleBtn:disabled {
+  opacity: 0.5;
+  cursor: wait;
+  transform: none;
+}

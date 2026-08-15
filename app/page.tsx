@@ -84,63 +84,63 @@ const discoverCategories = [
 
 export default function Home() {
   const [query, setQuery] = useState("");
-  const [clips, setClips] = useState<Clip[]>(demoClips);
+  const [clips, setClips] = useState<Clip[]>([]);
   const [loading, setLoading] = useState(false);
   const [orientation, setOrientation] = useState("all");
   const [maxDuration, setMaxDuration] = useState("30");
   const [favorites, setFavorites] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
-  useEffect(() => {
-    const randomSuggestions = [
-      "cinematic",
-      "city night",
-      "nature",
-      "people",
-      "travel",
-      "ocean",
-      "car driving",
-      "rain",
-      "sunset",
-      "street",
-    ];
+  const randomSuggestions = [
+    "cinematic",
+    "city night",
+    "nature",
+    "people",
+    "travel",
+    "ocean",
+    "car driving",
+    "rain",
+    "sunset",
+    "street",
+  ];
 
-    const randomQuery =
-      randomSuggestions[
-        Math.floor(Math.random() * randomSuggestions.length)
-      ];
+  async function shuffleClips() {
+    setLoading(true);
 
-    async function loadHomepageClips() {
-      setLoading(true);
+    try {
+      const randomQuery =
+        randomSuggestions[
+          Math.floor(Math.random() * randomSuggestions.length)
+        ];
 
-      try {
-        const params = new URLSearchParams({
-          q: randomQuery,
-          orientation: "all",
-          maxDuration: "30",
-        });
+      const params = new URLSearchParams({
+        q: randomQuery,
+        orientation: "all",
+        maxDuration: "30",
+      });
 
-        const res = await fetch(`/api/search?${params.toString()}`);
-        const data = await res.json();
+      const res = await fetch(`/api/search?${params.toString()}`);
+      const data = await res.json();
 
-        if (Array.isArray(data.clips) && data.clips.length > 0) {
-          const randomClips = [...data.clips]
-            .sort(() => Math.random() - 0.5)
-            .slice(0, 4)
-            .map((clip: Clip) => ({
-              ...clip,
-              tags: Array.isArray(clip.tags) ? clip.tags : [],
-            }));
+      if (Array.isArray(data.clips) && data.clips.length > 0) {
+        const randomClips = [...data.clips]
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 4)
+          .map((clip: Clip) => ({
+            ...clip,
+            tags: Array.isArray(clip.tags) ? clip.tags : [],
+          }));
 
-          setClips(randomClips);
-        }
-      } catch (error) {
-        console.error("Homepage clips failed to load:", error);
-      } finally {
-        setLoading(false);
+        setClips(randomClips);
       }
+    } catch (error) {
+      console.error("Shuffle failed:", error);
+    } finally {
+      setLoading(false);
     }
+  }
 
-    loadHomepageClips();
+  useEffect(() => {
+    shuffleClips();
   }, []);
     async function loadCategory(categoryQuery: string) {
     setLoading(true);
@@ -231,11 +231,20 @@ export default function Home() {
 
         <div className="discover-categories">
           <div className="discover-heading">
-            <div>
-              <h2>Discover</h2>
-              <p>Find inspiration for your next edit.</p>
-            </div>
-          </div>
+  <div>
+    <h2>Discover</h2>
+    <p>Find inspiration for your next edit.</p>
+  </div>
+
+  <button
+    type="button"
+    className="shuffleBtn"
+    onClick={shuffleClips}
+    disabled={loading}
+  >
+    🔀 Shuffle
+  </button>
+</div>
 
           <div className="category-list">
             {discoverCategories.map((category) => (
@@ -274,6 +283,17 @@ export default function Home() {
         )}
 
         <div className="grid">
+         {loading && clips.length === 0 && (
+  <div className="loadingGrid">
+    {[1, 2, 3, 4].map((item) => (
+      <div className="skeletonCard" key={item}>
+        <div className="skeletonVideo"></div>
+        <div className="skeletonLine skeletonTitle"></div>
+        <div className="skeletonLine skeletonMeta"></div>
+      </div>
+    ))}
+  </div>
+)}
           {visible.map(clip => (
             <article className="card" key={clip.id}>
               <div className="preview">
