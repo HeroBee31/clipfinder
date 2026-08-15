@@ -23,8 +23,8 @@ const demoClips: Clip[] = [
     duration: 8,
     width: 1280,
     height: 720,
-    image: "https://images.pexels.com/videos/853800/free-video-853800.jpg",
-    video: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+    image: "https://images.pexels.com/videos/38134466/beauty-korean-makeup-model-38134466.jpeg",
+    video: "https://videos.pexels.com/video-files/38134466/16190592_360_640_60fps.mp4",
     source: "Demo",
     tags: ["night", "city", "walking", "lonely"]
   },
@@ -34,8 +34,8 @@ const demoClips: Clip[] = [
     duration: 6,
     width: 1080,
     height: 1920,
-    image: "https://images.pexels.com/videos/1111421/free-video-1111421.jpg",
-    video: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+    image: "https://images.pexels.com/videos/6781549/pexels-photo-6781549.jpeg",
+    video: "https://videos.pexels.com/video-files/6781549/6781549-sd_640_360_30fps.mp4",
     source: "Demo",
     tags: ["rain", "street", "night", "moody"]
   },
@@ -45,8 +45,8 @@ const demoClips: Clip[] = [
     duration: 7,
     width: 1920,
     height: 1080,
-    image: "https://images.pexels.com/videos/855809/free-video-855809.jpg",
-    video: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+    image: "https://images.pexels.com/videos/7894357/active-adult-beautiful-body-7894357.jpeg",
+    video: "https://videos.pexels.com/video-files/7894357/7894357-sd_960_506_25fps.mp4",
     source: "Demo",
     tags: ["ocean", "waves", "nature", "calm"]
   },
@@ -56,8 +56,8 @@ const demoClips: Clip[] = [
     duration: 5,
     width: 1080,
     height: 1920,
-    image: "https://images.pexels.com/videos/3044479/free-video-3044479.jpg",
-    video: "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4",
+    image: "https://images.pexels.com/videos/36526809/pexels-photo-36526809.jpeg",
+    video: "https://videos.pexels.com/video-files/36526809/15488608_640_360_30fps.mp4",
     source: "Demo",
     tags: ["person", "window", "thinking", "sad"]
   }
