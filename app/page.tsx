@@ -68,7 +68,18 @@ const suggestions = [
   "rainy city aesthetic",
   "car driving fast",
   "someone crying",
-  "sunset over mountains"
+  "sunset over mountains",
+];
+
+const discoverCategories = [
+  { label: "🔥 Trending", query: "trending cinematic" },
+  { label: "🎬 Cinematic", query: "cinematic" },
+  { label: "😢 Emotional", query: "emotional sad person" },
+  { label: "🌃 Aesthetic", query: "aesthetic city night" },
+  { label: "🏎️ Action", query: "action car driving" },
+  { label: "🌿 Nature", query: "beautiful nature" },
+  { label: "👤 People", query: "people lifestyle" },
+  { label: "🌙 Dark / Moody", query: "dark moody cinematic" },
 ];
 
 export default function Home() {
@@ -131,6 +142,36 @@ export default function Home() {
 
     loadHomepageClips();
   }, []);
+    async function loadCategory(categoryQuery: string) {
+    setLoading(true);
+
+    try {
+      const params = new URLSearchParams({
+        q: categoryQuery,
+        orientation,
+        maxDuration,
+      });
+
+      const res = await fetch(`/api/search?${params.toString()}`);
+      const data = await res.json();
+
+      if (Array.isArray(data.clips) && data.clips.length > 0) {
+        const categoryClips = [...data.clips]
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 4)
+          .map((clip: Clip) => ({
+            ...clip,
+            tags: Array.isArray(clip.tags) ? clip.tags : [],
+          }));
+
+        setClips(categoryClips);
+      }
+    } catch (error) {
+      console.error("Category search failed:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
   async function search(e?: FormEvent) {
     e?.preventDefault();
     setLoading(true);
@@ -186,6 +227,28 @@ export default function Home() {
 
         <div className="suggestions">
           {suggestions.map(s => <button key={s} onClick={() => { setQuery(s); setTimeout(() => search(), 0); }}>{s}</button>)}
+                </div>
+
+        <div className="discover-categories">
+          <div className="discover-heading">
+            <div>
+              <h2>Discover</h2>
+              <p>Find inspiration for your next edit.</p>
+            </div>
+          </div>
+
+          <div className="category-list">
+            {discoverCategories.map((category) => (
+              <button
+                key={category.label}
+                type="button"
+                onClick={() => loadCategory(category.query)}
+                disabled={loading}
+              >
+                {category.label}
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
