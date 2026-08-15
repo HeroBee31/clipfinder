@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Download, Heart, Search, SlidersHorizontal, Sparkles, X } from "lucide-react";
 
 type Clip = {
@@ -79,7 +79,58 @@ export default function Home() {
   const [maxDuration, setMaxDuration] = useState("30");
   const [favorites, setFavorites] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
+  useEffect(() => {
+    const randomSuggestions = [
+      "cinematic",
+      "city night",
+      "nature",
+      "people",
+      "travel",
+      "ocean",
+      "car driving",
+      "rain",
+      "sunset",
+      "street",
+    ];
 
+    const randomQuery =
+      randomSuggestions[
+        Math.floor(Math.random() * randomSuggestions.length)
+      ];
+
+    async function loadHomepageClips() {
+      setLoading(true);
+
+      try {
+        const params = new URLSearchParams({
+          q: randomQuery,
+          orientation: "all",
+          maxDuration: "30",
+        });
+
+        const res = await fetch(`/api/search?${params.toString()}`);
+        const data = await res.json();
+
+        if (Array.isArray(data.clips) && data.clips.length > 0) {
+          const randomClips = [...data.clips]
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 4)
+            .map((clip: Clip) => ({
+              ...clip,
+              tags: Array.isArray(clip.tags) ? clip.tags : [],
+            }));
+
+          setClips(randomClips);
+        }
+      } catch (error) {
+        console.error("Homepage clips failed to load:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadHomepageClips();
+  }, []);
   async function search(e?: FormEvent) {
     e?.preventDefault();
     setLoading(true);
